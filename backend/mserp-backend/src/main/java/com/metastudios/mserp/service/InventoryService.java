@@ -63,6 +63,34 @@ public class InventoryService {
         inventoryRepository.delete(inventory);
     }
 
+    @Transactional
+    public void increaseStock(Long productId, Integer quantityAdded) {
+        List<Inventory> inventoryList = inventoryRepository.findByProductId(productId);
+        
+        if (!inventoryList.isEmpty()) {
+            Inventory inventory = inventoryList.get(0);
+            inventory.setCurrentStock(inventory.getCurrentStock() + quantityAdded);
+            inventory.setLastUpdated(LocalDate.now());
+            inventoryRepository.save(inventory);
+        }
+    }
+
+    @Transactional
+    public void decreaseStock(Long productId, Integer quantityRemoved) {
+        List<Inventory> inventoryList = inventoryRepository.findByProductId(productId);
+        
+        if (!inventoryList.isEmpty()) {
+            Inventory inventory = inventoryList.get(0);
+            if (inventory.getCurrentStock() >= quantityRemoved) {
+                inventory.setCurrentStock(inventory.getCurrentStock() - quantityRemoved);
+                inventory.setLastUpdated(LocalDate.now());
+                inventoryRepository.save(inventory);
+            } else {
+                throw new ResourceNotFoundException("Insufficient stock for product id: " + productId);
+            }
+        }
+    }
+
     private InventoryDTO convertToDTO(Inventory inventory) {
         InventoryDTO dto = new InventoryDTO();
         dto.setId(inventory.getId());

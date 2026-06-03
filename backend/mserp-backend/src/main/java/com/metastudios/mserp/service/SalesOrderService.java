@@ -62,6 +62,19 @@ public class SalesOrderService {
         salesOrderRepository.delete(salesOrder);
     }
 
+    @Transactional
+    public SalesOrderDTO fulfillSalesOrder(Long id) {
+        SalesOrder salesOrder = salesOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sales order not found with id: " + id));
+        
+        salesOrder.setStatus("FULFILLED");
+        SalesOrder updatedSalesOrder = salesOrderRepository.save(salesOrder);
+        
+        // Dashboard and order counts are automatically updated through repository operations
+        
+        return convertToDTO(updatedSalesOrder);
+    }
+
     private SalesOrderDTO convertToDTO(SalesOrder salesOrder) {
         SalesOrderDTO dto = new SalesOrderDTO();
         dto.setId(salesOrder.getId());

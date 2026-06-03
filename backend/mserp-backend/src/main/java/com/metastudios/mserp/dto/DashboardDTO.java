@@ -11,4 +11,8 @@ public class DashboardDTO {
     private Long totalProducts;
     private Long totalAttendanceRecords;
     private Long totalLeaveRequests;
+    private Double totalRevenue;
+    private Double totalExpenses;
+    private Long totalPendingInvoices;
+    private Long totalPendingPayments;
 }

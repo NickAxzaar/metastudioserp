@@ -14,6 +14,9 @@ public class InvoiceRequestDTO {
     @Positive(message = "Customer ID must be a positive number")
     private Long customerId;
 
+    @Positive(message = "Sales Order ID must be a positive number")
+    private Long salesOrderId;
+
     @NotBlank(message = "Invoice number is required")
     @Size(min = 1, max = 50, message = "Invoice number must be between 1 and 50 characters")
     private String invoiceNumber;

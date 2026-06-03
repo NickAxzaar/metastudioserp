@@ -1,5 +1,6 @@
 package com.metastudios.mserp.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,20 @@ public class PurchaseOrderService {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Purchase order not found with id: " + id));
         purchaseOrderRepository.delete(purchaseOrder);
+    }
+
+    @Transactional
+    public PurchaseOrderDTO completePurchaseOrder(Long id) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase order not found with id: " + id));
+        
+        purchaseOrder.setStatus("COMPLETED");
+        PurchaseOrder updatedPurchaseOrder = purchaseOrderRepository.save(purchaseOrder);
+        
+        // TODO: Update inventory stock here based on products in this purchase order
+        // This would require a line_items table or similar to track products per PO
+        
+        return convertToDTO(updatedPurchaseOrder);
     }
 
     private PurchaseOrderDTO convertToDTO(PurchaseOrder purchaseOrder) {

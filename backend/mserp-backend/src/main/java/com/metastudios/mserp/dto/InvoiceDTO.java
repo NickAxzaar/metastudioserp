@@ -9,6 +9,8 @@ public class InvoiceDTO {
     private Long customerId;
     private String customerName;
     private String customerEmail;
+    private Long salesOrderId;
+    private String salesOrderCode;
     private String invoiceNumber;
     private LocalDate invoiceDate;
     private LocalDate dueDate;

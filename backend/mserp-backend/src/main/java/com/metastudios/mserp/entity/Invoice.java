@@ -33,6 +33,10 @@ public class Invoice {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "sales_order_id")
+    private SalesOrder salesOrder;
+
     @Column(nullable = false, unique = true)
     private String invoiceNumber;
 
